@@ -6,6 +6,7 @@
 #define pushBoton 7
 #define pot A5
 int valorPot=0;
+int crossTime;
 
 void setup(){
   pinMode(led_verde,OUTPUT);
@@ -41,10 +42,10 @@ void amarillo(){
   delay(100);
 }
 
-void rojo(){
+void rojo(int duracion){
   digitalWrite(led_rojo,HIGH);
   Peaton();
-  delay(5000);
+  delay(crossTime);
   digitalWrite(led_rojo,LOW);
   Peaton();
   delay(100);
@@ -63,12 +64,13 @@ void Peaton(){
 void loop(){  
   digitalWrite(led_verde,HIGH);
   Serial.print("Valor del potenciometro ");
-  Serial.println(valorPot);
+  Serial.println(crossTime);
   valorPot=analogRead(pot);
   if(digitalRead(pushBoton) == LOW){
-    verde(valorPot*10);  
+    crossTime=map(valorPot,0,1023,5,20)*1000;
+    verde(crossTime);  
     parpadeo();
     amarillo();
-    rojo();
+    rojo(crossTime);
   }
 }
